@@ -176,8 +176,10 @@ async function load() {
 }
 
 async function fetchSheet(id) {
-  const r = await fetch(WORKER + '?sheetId=' + id);
-  if (!r.ok) throw new Error('Worker returned ' + r.status + ' — check Cloudflare Worker is deployed and SMARTSHEET_TOKEN is set.');
+  const url = 'https://wenco-proxy.kaardal.workers.dev/?sheetId=' + encodeURIComponent(id);
+  console.log('Fetching:', url);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Worker returned ' + r.status);
   return r.json();
 }
 
