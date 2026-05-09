@@ -160,6 +160,7 @@ async function load() {
   try {
     const [ev, inv] = await Promise.all([fetchSheet(EV_ID), fetchSheet(INV_ID)]);
     const events = parse(ev), inventory = parse(inv);
+    console.log('Inventory rows:', inventory.map(r => r['Device_ID']));
     if (!filtersSet) { populateFilters(events); filtersSet = true; }
 
     const fd = new Date(from+'T00:00:00'), td = new Date(to+'T23:59:59');
