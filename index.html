@@ -168,7 +168,7 @@ async function load() {
     if (sf) rows = rows.filter(r => r['Size']===sf);
 
     const outs  = rows.filter(r => r['Event Type']==='SIGN_OUT');
-    const fleet = inventory.length || 0;
+    const fleet = inventory.filter(r => r['Device_ID'] && r['Device_ID'].toString().trim() !== '').length || 0;
 
     const today = new Date().toISOString().split('T')[0];
     const todayOuts = events.filter(r => { const d=getTS(r); return r['Event Type']==='SIGN_OUT' && d && d.toISOString().startsWith(today); });
