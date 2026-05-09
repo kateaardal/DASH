@@ -7,12 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
-  :root {
-    --orange:#f37021; --green:#1a5c2a;
-    --black:#0f0f0f; --surface:#1a1a1a; --surface2:#242424;
-    --border:#333; --text:#e8e8e4; --muted:#888;
-    --og:rgba(243,112,33,0.15); --gg:rgba(26,92,42,0.2);
-  }
+  :root{--orange:#f37021;--green:#1a5c2a;--black:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;--border:#333;--text:#e8e8e4;--muted:#888;--og:rgba(243,112,33,0.15);--gg:rgba(26,92,42,0.2);}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 10% 10%,rgba(26,92,42,.08) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 90% 80%,rgba(243,112,33,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
@@ -33,16 +28,13 @@
   .lbtn{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:8px 24px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s;align-self:flex-end;}
   .lbtn:hover{background:#d95f0e;}
   .st{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:1.5rem;min-height:18px;}
-  .st.err{color:#f87171;} .st.load{color:var(--orange);} .st.ok{color:#4ade80;}
+  .st.err{color:#f87171;}.st.load{color:var(--orange);}.st.ok{color:#4ade80;}
   .kg{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:2rem;}
   .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1rem;}
-  .kpi.o{border-top:3px solid var(--orange);}
-  .kpi.g{border-top:3px solid #4ade80;}
-  .kpi.gr{border-top:3px solid var(--muted);}
-  .kpi.b{border-top:3px solid #60a5fa;}
+  .kpi.o{border-top:3px solid var(--orange);}.kpi.g{border-top:3px solid #4ade80;}.kpi.gr{border-top:3px solid var(--muted);}.kpi.b{border-top:3px solid #60a5fa;}
   .kl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;}
   .kv{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:800;line-height:1;}
-  .kv.o{color:var(--orange);} .kv.g{color:#4ade80;} .kv.b{color:#60a5fa;}
+  .kv.o{color:var(--orange);}.kv.g{color:#4ade80;}.kv.b{color:#60a5fa;}
   .ks{font-size:11px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace;}
   .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:2rem;}
   .cc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
@@ -80,17 +72,14 @@
   <h1><span>Bike Demo</span> Analytics</h1>
   <p class="sub">Demo Day · Demo Bike Usage Dashboard</p>
   <div class="live">LIVE · Smartsheet via Cloudflare</div>
-
   <div class="cfg">
-    <div class="cg"><label>From</label><input type="date" id="df" /></div>
-    <div class="cg"><label>To</label><input type="date" id="dt" /></div>
+    <div class="cg"><label>From</label><input type="date" id="df"/></div>
+    <div class="cg"><label>To</label><input type="date" id="dt"/></div>
     <div class="cg"><label>Model</label><select id="fm"><option value="">All Models</option></select></div>
     <div class="cg"><label>Size</label><select id="fs"><option value="">All Sizes</option></select></div>
     <button class="lbtn" onclick="load()">Load Data</button>
   </div>
-
   <div class="st" id="st">Select a date range and click Load Data.</div>
-
   <div class="kg">
     <div class="kpi o"><div class="kl">Currently Out</div><div class="kv o" id="k-out">—</div><div class="ks">bikes</div></div>
     <div class="kpi g"><div class="kl">Available</div><div class="kv g" id="k-av">—</div><div class="ks">bikes</div></div>
@@ -98,31 +87,23 @@
     <div class="kpi b"><div class="kl">Total Rides</div><div class="kv b" id="k-ri">—</div><div class="ks" id="k-rs">in period</div></div>
     <div class="kpi b"><div class="kl">Utilisation</div><div class="kv b" id="k-ut">—</div><div class="ks">rides / fleet</div></div>
   </div>
-
   <div class="cr">
     <div class="cc"><div class="ct">Rides by Model</div><div class="cw"><canvas id="ch-m"></canvas></div></div>
     <div class="cc"><div class="ct b">Rides by Model + Size</div><div class="cw"><canvas id="ch-s"></canvas></div></div>
   </div>
-
   <div class="tc">
-    <div class="coh">
-      <div class="col">Currently Signed Out</div>
-      <span class="coc" id="co-c">0 bikes</span>
-    </div>
+    <div class="coh"><div class="col">Currently Signed Out</div><span class="coc" id="co-c">0 bikes</span></div>
     <div id="co-t"><div class="empty">Load data to see currently signed out bikes.</div></div>
   </div>
-
   <div class="tc">
     <div class="ct b" style="margin-bottom:1rem;">Usage by Model + Size</div>
     <div id="u-t"><div class="empty">Load data to see usage breakdown.</div></div>
   </div>
-
   <div class="tc">
     <div class="ct" style="margin-bottom:1rem;">All Rides in Period — completed first, then still out</div>
     <div id="r-t"><div class="empty">Load data to see rides.</div></div>
   </div>
 </div>
-
 <script>
 const WORKER = 'https://wenco-proxy.kaardal.workers.dev';
 const EV_ID  = 'CGjQVvXq3XPgggX9FRG5qC5Q7hvPhC3jwXgq49x1';
@@ -136,11 +117,12 @@ window.onload = () => {
   document.getElementById('dt').value = t;
 };
 
+// ── Helpers ───────────────────────────────────────────────────
 function getTS(row) {
   const ts = row['Timestamp'] || row['Submitted At'] || '';
   if (!ts) return null;
   const d = new Date(ts);
-  return isNaN(d) ? null : d;
+  return isNaN(d.getTime()) ? null : d;
 }
 
 function fmt(d, short) {
@@ -150,182 +132,225 @@ function fmt(d, short) {
     : d.toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
 }
 
+function ss(msg, type) {
+  const e = document.getElementById('st');
+  e.textContent = msg;
+  e.className = 'st ' + (type || '');
+}
+
+// ── Build paired rides — SINGLE source of truth for duration ──
+function buildPairs(rows) {
+  const outs = rows.filter(r => r['Event Type'] === 'SIGN_OUT');
+  const ins  = rows.filter(r => r['Event Type'] === 'SIGN_IN');
+
+  // Map Device_ID -> most recent SIGN_IN
+  const inMap = {};
+  ins.forEach(r => {
+    const id = r['Device_ID'];
+    const d  = getTS(r);
+    if (!inMap[id] || (d && d > getTS(inMap[id]))) inMap[id] = r;
+  });
+
+  const completed = [], stillOut = [];
+  outs.forEach(out => {
+    const inRow  = inMap[out['Device_ID']] || null;
+    const outTS  = getTS(out);
+    const inTS   = inRow ? getTS(inRow) : null;
+    const durMins = (outTS && inTS && inTS.getTime() > outTS.getTime())
+      ? Math.round((inTS.getTime() - outTS.getTime()) / 60000)
+      : null;
+    const pair = { out, in: inRow, outTS, inTS, durMins };
+    if (inRow) completed.push(pair);
+    else stillOut.push(pair);
+  });
+
+  completed.sort((a, b) => (b.outTS ? b.outTS.getTime() : 0) - (a.outTS ? a.outTS.getTime() : 0));
+  stillOut.sort((a, b)  => (b.outTS ? b.outTS.getTime() : 0) - (a.outTS ? a.outTS.getTime() : 0));
+  return { completed, stillOut, all: [...completed, ...stillOut] };
+}
+
+// ── API ───────────────────────────────────────────────────────
+async function fetchSheet(id) {
+  const url = new URL(WORKER);
+  url.searchParams.set('sheetId', id);
+  const r = await fetch(url.toString());
+  if (!r.ok) throw new Error('Worker returned ' + r.status);
+  return r.json();
+}
+
+function parse(data) {
+  const cols = {};
+  data.columns.forEach(c => cols[c.id] = c.title);
+  return (data.rows || []).map(row => {
+    const o = {};
+    row.cells.forEach(c => o[cols[c.columnId]] = c.value ?? '');
+    return o;
+  });
+}
+
+function populateFilters(events) {
+  const ms  = [...new Set(events.map(r => r['Model']).filter(Boolean))].sort();
+  const ss2 = [...new Set(events.map(r => r['Size']).filter(Boolean))].sort();
+  ms.forEach(m  => { const o = document.createElement('option'); o.value = m; o.textContent = m; document.getElementById('fm').appendChild(o); });
+  ss2.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; document.getElementById('fs').appendChild(o); });
+}
+
+// ── Main load ─────────────────────────────────────────────────
 async function load() {
   const from = document.getElementById('df').value;
   const to   = document.getElementById('dt').value;
   const mf   = document.getElementById('fm').value;
   const sf   = document.getElementById('fs').value;
-  if (!from || !to) { ss('Select a date range first.','err'); return; }
-  ss('Loading from Smartsheet...','load');
+  if (!from || !to) { ss('Select a date range first.', 'err'); return; }
+  ss('Loading from Smartsheet...', 'load');
   try {
     const [ev, inv] = await Promise.all([fetchSheet(EV_ID), fetchSheet(INV_ID)]);
-    const events = parse(ev), inventory = parse(inv);
-    console.log('Inventory rows:', inventory.map(r => r['Device_ID']));
+    const events    = parse(ev);
+    // Fleet size: only count rows with a valid Device_ID
+    const inventory = parse(inv).filter(r => r['Device_ID'] && r['Device_ID'].toString().trim() !== '');
+    const fleet     = inventory.length;
+
     if (!filtersSet) { populateFilters(events); filtersSet = true; }
 
-    const fd = new Date(from+'T00:00:00'), td = new Date(to+'T23:59:59');
-    let rows = events.filter(r => { const d=getTS(r); return d && d>=fd && d<=td; });
-    if (mf) rows = rows.filter(r => r['Model']===mf);
-    if (sf) rows = rows.filter(r => r['Size']===sf);
+    const fd   = new Date(from + 'T00:00:00');
+    const td   = new Date(to   + 'T23:59:59');
+    let rows   = events.filter(r => { const d = getTS(r); return d && d >= fd && d <= td; });
+    if (mf) rows = rows.filter(r => r['Model'] === mf);
+    if (sf) rows = rows.filter(r => r['Size']  === sf);
 
-    const outs  = rows.filter(r => r['Event Type']==='SIGN_OUT');
-    const fleet = inventory.filter(r => r['Device_ID'] && r['Device_ID'].toString().trim() !== '').length || 0;
+    const outs = rows.filter(r => r['Event Type'] === 'SIGN_OUT');
 
-    const today = new Date().toISOString().split('T')[0];
-    const todayOuts = events.filter(r => { const d=getTS(r); return r['Event Type']==='SIGN_OUT' && d && d.toISOString().startsWith(today); });
-    const retIDs    = new Set(events.filter(r => { const d=getTS(r); return r['Event Type']==='SIGN_IN' && d && d.toISOString().startsWith(today); }).map(r=>r['Device_ID']));
+    // Currently out — today only, using all events not just filtered
+    const today     = new Date().toISOString().split('T')[0];
+    const todayOuts = events.filter(r => { const d = getTS(r); return r['Event Type'] === 'SIGN_OUT' && d && d.toISOString().startsWith(today); });
+    const retIDs    = new Set(events.filter(r => { const d = getTS(r); return r['Event Type'] === 'SIGN_IN' && d && d.toISOString().startsWith(today); }).map(r => r['Device_ID']));
     const curOut    = todayOuts.filter(r => !retIDs.has(r['Device_ID']));
 
-    const util = fleet>0 ? Math.round((outs.length/fleet)*100) : 0;
+    const util = fleet > 0 ? Math.round((outs.length / fleet) * 100) : 0;
     document.getElementById('k-out').textContent = curOut.length;
-    document.getElementById('k-av').textContent  = Math.max(0, fleet-curOut.length);
+    document.getElementById('k-av').textContent  = Math.max(0, fleet - curOut.length);
     document.getElementById('k-fl').textContent  = fleet;
     document.getElementById('k-ri').textContent  = outs.length;
-    document.getElementById('k-ut').textContent  = util+'%';
-    document.getElementById('k-rs').textContent  = from===to ? 'today' : from+' to '+to;
+    document.getElementById('k-ut').textContent  = util + '%';
+    document.getElementById('k-rs').textContent  = from === to ? 'today' : from + ' to ' + to;
+
+    // Build pairs once — used by renderUsage AND renderRides
+    const pairs = buildPairs(rows);
 
     renderChartModel(outs);
     renderChartSize(outs);
     renderCO(curOut);
-    renderUsage(outs, rows, fleet);
-    renderRides(rows);
-    ss('✓ Loaded '+events.length+' events · '+fleet+' devices · '+new Date().toLocaleTimeString(),'ok');
-  } catch(e) { ss('✗ '+e.message,'err'); console.error(e); }
+    renderUsage(outs, pairs, fleet);
+    renderRides(pairs);
+
+    ss('✓ Loaded ' + events.length + ' events · ' + fleet + ' devices · ' + new Date().toLocaleTimeString(), 'ok');
+  } catch(e) { ss('✗ ' + e.message, 'err'); console.error(e); }
 }
 
-async function fetchSheet(id) {
-  const url = new URL(WORKER);
-  url.searchParams.set('sheetId', id);
-  const r = await fetch(url.toString());
-  if (!r.ok) throw new Error('Worker returned '+r.status);
-  return r.json();
-}
-
-function parse(data) {
-  const cols={};
-  data.columns.forEach(c=>cols[c.id]=c.title);
-  return (data.rows||[]).map(row=>{const o={};row.cells.forEach(c=>o[cols[c.columnId]]=c.value??'');return o;});
-}
-
-function populateFilters(events) {
-  const ms=[...new Set(events.map(r=>r['Model']).filter(Boolean))].sort();
-  const ss2=[...new Set(events.map(r=>r['Size']).filter(Boolean))].sort();
-  ms.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;document.getElementById('fm').appendChild(o);});
-  ss2.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('fs').appendChild(o);});
-}
-
-const COPTS={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{family:'DM Mono',size:11}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#888',font:{family:'DM Mono',size:11},stepSize:1},grid:{color:'rgba(255,255,255,.05)'}}}};
+// ── Charts ────────────────────────────────────────────────────
+const COPTS = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { ticks: { color: '#888', font: { family: 'DM Mono', size: 11 } }, grid: { color: 'rgba(255,255,255,.05)' } },
+    y: { ticks: { color: '#888', font: { family: 'DM Mono', size: 11 }, stepSize: 1 }, grid: { color: 'rgba(255,255,255,.05)' } }
+  }
+};
 
 function renderChartModel(outs) {
-  const c={};outs.forEach(r=>{const m=r['Model']||'?';c[m]=(c[m]||0)+1;});
-  if(mChart)mChart.destroy();
-  mChart=new Chart(document.getElementById('ch-m'),{type:'bar',data:{labels:Object.keys(c),datasets:[{data:Object.values(c),backgroundColor:COLORS,borderRadius:6,borderSkipped:false}]},options:COPTS});
+  const c = {};
+  outs.forEach(r => { const m = r['Model'] || '?'; c[m] = (c[m] || 0) + 1; });
+  if (mChart) mChart.destroy();
+  mChart = new Chart(document.getElementById('ch-m'), { type: 'bar', data: { labels: Object.keys(c), datasets: [{ data: Object.values(c), backgroundColor: COLORS, borderRadius: 6, borderSkipped: false }] }, options: COPTS });
 }
 
 function renderChartSize(outs) {
-  const c={};outs.forEach(r=>{const k=(r['Model']||'?')+' · '+(r['Size']||'?');c[k]=(c[k]||0)+1;});
-  if(sChart)sChart.destroy();
-  const opts=JSON.parse(JSON.stringify(COPTS));opts.indexAxis='y';opts.scales.y.ticks.color='#ccc';
-  sChart=new Chart(document.getElementById('ch-s'),{type:'bar',data:{labels:Object.keys(c),datasets:[{data:Object.values(c),backgroundColor:COLORS,borderRadius:6,borderSkipped:false}]},options:opts});
+  const c = {};
+  outs.forEach(r => { const k = (r['Model'] || '?') + ' · ' + (r['Size'] || '?'); c[k] = (c[k] || 0) + 1; });
+  if (sChart) sChart.destroy();
+  const opts = JSON.parse(JSON.stringify(COPTS));
+  opts.indexAxis = 'y';
+  opts.scales.y.ticks.color = '#ccc';
+  sChart = new Chart(document.getElementById('ch-s'), { type: 'bar', data: { labels: Object.keys(c), datasets: [{ data: Object.values(c), backgroundColor: COLORS, borderRadius: 6, borderSkipped: false }] }, options: opts });
 }
 
+// ── Currently Out ─────────────────────────────────────────────
 function renderCO(rows) {
-  document.getElementById('co-c').textContent=rows.length+' bike'+(rows.length!==1?'s':'');
-  if(!rows.length){document.getElementById('co-t').innerHTML='<div class="empty">No bikes currently out.</div>';return;}
-  let h='<table><thead><tr><th>Device</th><th>Model</th><th>Size</th><th>Colour</th><th>Phone</th><th>Signed Out</th></tr></thead><tbody>';
-  rows.forEach(r=>{
-    const d=getTS(r);
-    h+=`<tr><td><span class="tag">${r['Device_ID']||'—'}</span></td><td>${r['Model']||'—'}</td><td>${r['Size']||'—'}</td><td>${r['Colour']||'—'}</td><td class="ts-blank">${r['Client Phone']||'—'}</td><td class="ts-out">${fmt(d,true)}</td></tr>`;
+  document.getElementById('co-c').textContent = rows.length + ' bike' + (rows.length !== 1 ? 's' : '');
+  if (!rows.length) { document.getElementById('co-t').innerHTML = '<div class="empty">No bikes currently out.</div>'; return; }
+  let h = '<table><thead><tr><th>Device</th><th>Model</th><th>Size</th><th>Colour</th><th>Phone</th><th>Signed Out</th></tr></thead><tbody>';
+  rows.forEach(r => {
+    const d = getTS(r);
+    h += `<tr><td><span class="tag">${r['Device_ID']||'—'}</span></td><td>${r['Model']||'—'}</td><td>${r['Size']||'—'}</td><td>${r['Colour']||'—'}</td><td class="ts-blank">${r['Client Phone']||'—'}</td><td class="ts-out">${fmt(d, true)}</td></tr>`;
   });
-  h+='</tbody></table>';
-  document.getElementById('co-t').innerHTML=h;
+  h += '</tbody></table>';
+  document.getElementById('co-t').innerHTML = h;
 }
 
-function renderUsage(outs, allRows, fleet) {
-  const {all:pairs}=buildPairs(allRows);
-  const c={};
-  outs.forEach(r=>{
-    const k=(r['Model']||'?')+'|||'+(r['Size']||'?');
-    if(!c[k])c[k]={model:r['Model']||'?',size:r['Size']||'?',rides:0,durs:[]};
+// ── Usage by Model + Size — uses pairs for duration ───────────
+function renderUsage(outs, pairs, fleet) {
+  const c = {};
+  outs.forEach(r => {
+    const k = (r['Model'] || '?') + '|||' + (r['Size'] || '?');
+    if (!c[k]) c[k] = { model: r['Model'] || '?', size: r['Size'] || '?', rides: 0, durs: [] };
     c[k].rides++;
   });
-  // Use calculated durations from paired timestamps
-  pairs.forEach(pair=>{
-    if(pair.durMins===null)return;
-    const k=(pair.out['Model']||'?')+'|||'+(pair.out['Size']||'?');
-    if(c[k])c[k].durs.push(pair.durMins);
+  // Feed durations from completed pairs
+  pairs.all.forEach(pair => {
+    if (pair.durMins === null) return;
+    const k = (pair.out['Model'] || '?') + '|||' + (pair.out['Size'] || '?');
+    if (c[k]) c[k].durs.push(pair.durMins);
   });
-  const rows=Object.values(c).sort((a,b)=>b.rides-a.rides);
-  if(!rows.length){document.getElementById('u-t').innerHTML='<div class="empty">No data.</div>';return;}
-  let h='<table><thead><tr><th>Model</th><th>Size</th><th>Rides</th><th>Total Hours Out</th><th>Avg Duration / Ride</th><th>% of Rides</th><th>Utilisation</th></tr></thead><tbody>';
-  rows.forEach(r=>{
-    const totalMins=r.durs.reduce((a,b)=>a+b,0);
-    const totalHrs=r.durs.length?(totalMins/60).toFixed(1)+' hrs':'—';
-    const avgMins=r.durs.length?Math.round(totalMins/r.durs.length)+' mins':'—';
-    const pct=outs.length>0?Math.round((r.rides/outs.length)*100):0;
-    const ut=fleet>0?Math.round((r.rides/fleet)*100):0;
-    h+=`<tr><td><strong>${r.model}</strong></td><td><span class="tag">${r.size}</span></td><td style="font-family:'DM Mono',monospace;font-weight:600;">${r.rides}</td><td style="font-family:'DM Mono',monospace;color:#60a5fa;">${totalHrs}</td><td style="font-family:'DM Mono',monospace;color:var(--muted);">${avgMins}</td><td style="font-family:'DM Mono',monospace;color:var(--muted);">${pct}%</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="ub"><div class="uf${ut>=80?' w':''}" style="width:${Math.min(ut,100)}%"></div></div><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${ut}%</span></div></td></tr>`;
+  const rows = Object.values(c).sort((a, b) => b.rides - a.rides);
+  if (!rows.length) { document.getElementById('u-t').innerHTML = '<div class="empty">No data.</div>'; return; }
+  let h = '<table><thead><tr><th>Model</th><th>Size</th><th>Rides</th><th>Total Hours Out</th><th>Avg Duration / Ride</th><th>% of Rides</th><th>Utilisation</th></tr></thead><tbody>';
+  rows.forEach(r => {
+    const totalMins = r.durs.reduce((a, b) => a + b, 0);
+    const totalHrs  = r.durs.length ? (totalMins / 60).toFixed(1) + ' hrs' : '—';
+    const avgMins   = r.durs.length ? Math.round(totalMins / r.durs.length) + ' mins' : '—';
+    const pct = outs.length > 0 ? Math.round((r.rides / outs.length) * 100) : 0;
+    const ut  = fleet > 0 ? Math.round((r.rides / fleet) * 100) : 0;
+    h += `<tr><td><strong>${r.model}</strong></td><td><span class="tag">${r.size}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-weight:600;">${r.rides}</td>
+      <td style="font-family:'DM Mono',monospace;color:#60a5fa;">${totalHrs}</td>
+      <td style="font-family:'DM Mono',monospace;color:var(--muted);">${avgMins}</td>
+      <td style="font-family:'DM Mono',monospace;color:var(--muted);">${pct}%</td>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div class="ub"><div class="uf${ut >= 80 ? ' w' : ''}" style="width:${Math.min(ut, 100)}%"></div></div><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${ut}%</span></div></td>
+    </tr>`;
   });
-  h+='</tbody></table>';
-  document.getElementById('u-t').innerHTML=h;
+  h += '</tbody></table>';
+  document.getElementById('u-t').innerHTML = h;
 }
 
-// Build paired rides and return them — used by both renderRides and renderUsage
-function buildPairs(rows) {
-  const outs=rows.filter(r=>r['Event Type']==='SIGN_OUT');
-  const ins=rows.filter(r=>r['Event Type']==='SIGN_IN');
-  const inMap={};
-  ins.forEach(r=>{
-    const id=r['Device_ID'];
-    const d=getTS(r);
-    if(!inMap[id]||(d&&d>getTS(inMap[id])))inMap[id]=r;
-  });
-  const completed=[], stillOut=[];
-  outs.forEach(out=>{
-    const inRow=inMap[out['Device_ID']]||null;
-    const outTS=getTS(out);
-    const inTS=inRow?getTS(inRow):null;
-    // Calculate duration in mins from timestamps
-    const durMins=(outTS&&inTS&&inTS>outTS)?Math.round((inTS-outTS)/60000):null;
-    const pair={out,in:inRow,outTS,inTS,durMins};
-    if(inRow)completed.push(pair);
-    else stillOut.push(pair);
-  });
-  completed.sort((a,b)=>(b.outTS||0)-(a.outTS||0));
-  stillOut.sort((a,b)=>(b.outTS||0)-(a.outTS||0));
-  return {completed,stillOut,all:[...completed,...stillOut]};
-}
-
-function renderRides(rows) {
-  const {all}=buildPairs(rows);
-  if(!all.length){document.getElementById('r-t').innerHTML='<div class="empty">No rides in period.</div>';return;}
-  let h=`<table><thead><tr>
+// ── All Rides ─────────────────────────────────────────────────
+function renderRides(pairs) {
+  const { all } = pairs;
+  if (!all.length) { document.getElementById('r-t').innerHTML = '<div class="empty">No rides in period.</div>'; return; }
+  let h = `<table><thead><tr>
     <th>Device</th><th>Model</th><th>Size</th><th>Spec</th><th>Colour</th>
-    <th>Signed Out</th><th>Returned</th><th>Duration</th><th>Status</th><th>Condition on Return</th>
+    <th>Signed Out</th><th>Returned</th><th>Duration (mins)</th><th>Status</th><th>Condition on Return</th>
   </tr></thead><tbody>`;
-  all.forEach((pair,i)=>{
-    const {out,in:inRow,outTS,inTS,durMins}=pair;
-    const dur=durMins!==null?durMins+' mins':'—';
-    const status=inRow?'Returned':'Out';
-    const cond=inRow?(inRow['Condition at Return']||'—'):'—';
-    h+=`<tr class="${i%2===0?'':'alt'}">
+  all.forEach((pair, i) => {
+    const { out, in: inRow, outTS, inTS, durMins } = pair;
+    const dur    = durMins !== null ? durMins + ' mins' : '—';
+    const status = inRow ? 'Returned' : 'Out';
+    const cond   = inRow ? (inRow['Condition at Return'] || '—') : '—';
+    h += `<tr class="${i % 2 === 0 ? '' : 'alt'}">
       <td><span class="tag">${out['Device_ID']||'—'}</span></td>
       <td><strong>${out['Model']||'—'}</strong></td>
       <td>${out['Size']||'—'}</td>
       <td style="font-size:12px;color:var(--muted);">${out['Spec']||'—'}</td>
       <td>${out['Colour']||'—'}</td>
-      <td class="ts-out">${fmt(outTS,false)}</td>
-      <td class="${inTS?'ts-in':'ts-blank'}">${fmt(inTS,false)}</td>
+      <td class="ts-out">${fmt(outTS, false)}</td>
+      <td class="${inTS ? 'ts-in' : 'ts-blank'}">${fmt(inTS, false)}</td>
       <td style="font-family:'DM Mono',monospace;font-size:12px;color:#60a5fa;">${dur}</td>
-      <td><span class="pill ${status==='Returned'?'ret':'out'}">${status}</span></td>
+      <td><span class="pill ${status === 'Returned' ? 'ret' : 'out'}">${status}</span></td>
       <td style="font-size:12px;color:var(--muted);">${cond}</td>
     </tr>`;
   });
-  h+='</tbody></table>';
-  document.getElementById('r-t').innerHTML=h;
+  h += '</tbody></table>';
+  document.getElementById('r-t').innerHTML = h;
 }
-
-function ss(msg,type){const e=document.getElementById('st');e.textContent=msg;e.className='st '+(type||'');}
 </script>
 </body>
 </html>
