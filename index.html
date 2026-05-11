@@ -348,7 +348,7 @@ function renderRides(pairs) {
       <td style="font-family:'DM Mono',monospace;font-size:12px;color:#60a5fa;">${dur}</td>
       <td><span class="pill ${status === 'Returned' ? 'ret' : 'out'}">${status}</span></td>
       <td style="font-size:12px;color:var(--muted);">${cond}</td>
-      <td style="font-size:12px;color:var(--muted);">${inRow ? (inRow['Client Feedback'] || '—') : '—'}</td>
+      <td style="font-size:12px;color:var(--muted);">${inRow ? (inRow['Rider Feedback'] || '—') : '—'}</td>
     </tr>`;
   });
   h += '</tbody></table>';
