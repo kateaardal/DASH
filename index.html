@@ -143,22 +143,32 @@ function buildPairs(rows) {
   const outs = rows.filter(r => r['Event Type'] === 'SIGN_OUT');
   const ins  = rows.filter(r => r['Event Type'] === 'SIGN_IN');
 
-  // Map Device_ID -> most recent SIGN_IN
-  const inMap = {};
-  ins.forEach(r => {
-    const id = r['Device_ID'];
-    const d  = getTS(r);
-    if (!inMap[id] || (d && d > getTS(inMap[id]))) inMap[id] = r;
-  });
+  // For each SIGN_OUT, find the FIRST SIGN_IN for that Device_ID
+  // that occurred AFTER this specific sign-out timestamp
+  // This correctly handles bikes that go out multiple times in a day
 
   const completed = [], stillOut = [];
+
   outs.forEach(out => {
-    const inRow  = inMap[out['Device_ID']] || null;
-    const outTS  = getTS(out);
+    const outTS = getTS(out);
+    const id    = out['Device_ID'];
+
+    // Find all SIGN_INs for this device that happened after this sign-out
+    const matchingIns = ins
+      .filter(r => {
+        if (r['Device_ID'] !== id) return false;
+        const inTS = getTS(r);
+        return inTS && outTS && inTS.getTime() > outTS.getTime();
+      })
+      .sort((a, b) => getTS(a).getTime() - getTS(b).getTime()); // earliest first
+
+    // Take the first matching SIGN_IN (the one closest after this sign-out)
+    const inRow  = matchingIns.length > 0 ? matchingIns[0] : null;
     const inTS   = inRow ? getTS(inRow) : null;
-    const durMins = (outTS && inTS && inTS.getTime() > outTS.getTime())
+    const durMins = (outTS && inTS)
       ? Math.round((inTS.getTime() - outTS.getTime()) / 60000)
       : null;
+
     const pair = { out, in: inRow, outTS, inTS, durMins };
     if (inRow) completed.push(pair);
     else stillOut.push(pair);
@@ -171,9 +181,9 @@ function buildPairs(rows) {
 
 // ── API ───────────────────────────────────────────────────────
 async function fetchSheet(id) {
-  const url = new URL(WORKER);
-  url.searchParams.set('sheetId', id);
-  const r = await fetch(url.toString());
+  const url = WORKER + '/?sheetId=' + encodeURIComponent(id);
+  console.log('Fetching:', url);
+  const r = await fetch(url);
   if (!r.ok) throw new Error('Worker returned ' + r.status);
   return r.json();
 }
