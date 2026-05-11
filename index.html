@@ -87,9 +87,8 @@
     <div class="kpi b"><div class="kl">Total Rides</div><div class="kv b" id="k-ri">—</div><div class="ks" id="k-rs">in period</div></div>
     <div class="kpi b"><div class="kl">Utilisation</div><div class="kv b" id="k-ut">—</div><div class="ks">rides / fleet</div></div>
   </div>
-  <div class="cr">
+  <div style="margin-bottom:2rem;">
     <div class="cc"><div class="ct">Rides by Model</div><div class="cw"><canvas id="ch-m"></canvas></div></div>
-    <div class="cc"><div class="ct b">Rides by Model + Size</div><div class="cw"><canvas id="ch-s"></canvas></div></div>
   </div>
   <div class="tc">
     <div class="coh"><div class="col">Currently Signed Out</div><span class="coc" id="co-c">0 bikes</span></div>
@@ -109,7 +108,7 @@ const WORKER = 'https://wenco-proxy.kaardal.workers.dev';
 const EV_ID  = 'CGjQVvXq3XPgggX9FRG5qC5Q7hvPhC3jwXgq49x1';
 const INV_ID = 'MMv52RFjQpgQRmpqmrXHRQ5wVg5mMg59XqPgmWG1';
 const COLORS = ['#f37021','#1a5c2a','#60a5fa','#fbbf24','#a78bfa','#f472b6','#4ade80','#fb923c','#34d399'];
-let mChart = null, sChart = null, filtersSet = false;
+let mChart = null, filtersSet = false;
 
 window.onload = () => {
   const t = new Date().toISOString().split('T')[0];
@@ -119,10 +118,13 @@ window.onload = () => {
 
 // ── Helpers ───────────────────────────────────────────────────
 function getTS(row) {
-  const ts = row['Timestamp'] || row['Submitted At'] || '';
-  if (!ts) return null;
-  const d = new Date(ts);
-  return isNaN(d.getTime()) ? null : d;
+  // Try Timestamp (system col with full date+time) first, then Submitted At
+  const candidates = [row['Timestamp'], row['Submitted At']].filter(Boolean);
+  for (const ts of candidates) {
+    const d = new Date(ts);
+    if (!isNaN(d.getTime()) && d.getFullYear() > 2000) return d;
+  }
+  return null;
 }
 
 function fmt(d, short) {
@@ -248,7 +250,6 @@ async function load() {
     const pairs = buildPairs(rows);
 
     renderChartModel(outs);
-    renderChartSize(outs);
     renderCO(curOut);
     renderUsage(outs, pairs, fleet);
     renderRides(pairs);
@@ -274,15 +275,7 @@ function renderChartModel(outs) {
   mChart = new Chart(document.getElementById('ch-m'), { type: 'bar', data: { labels: Object.keys(c), datasets: [{ data: Object.values(c), backgroundColor: COLORS, borderRadius: 6, borderSkipped: false }] }, options: COPTS });
 }
 
-function renderChartSize(outs) {
-  const c = {};
-  outs.forEach(r => { const k = (r['Model'] || '?') + ' · ' + (r['Size'] || '?'); c[k] = (c[k] || 0) + 1; });
-  if (sChart) sChart.destroy();
-  const opts = JSON.parse(JSON.stringify(COPTS));
-  opts.indexAxis = 'y';
-  opts.scales.y.ticks.color = '#ccc';
-  sChart = new Chart(document.getElementById('ch-s'), { type: 'bar', data: { labels: Object.keys(c), datasets: [{ data: Object.values(c), backgroundColor: COLORS, borderRadius: 6, borderSkipped: false }] }, options: opts });
-}
+
 
 // ── Currently Out ─────────────────────────────────────────────
 function renderCO(rows) {
