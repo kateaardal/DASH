@@ -330,8 +330,8 @@ function renderRides(pairs) {
   const { all } = pairs;
   if (!all.length) { document.getElementById('r-t').innerHTML = '<div class="empty">No rides in period.</div>'; return; }
   let h = `<table><thead><tr>
-    <th>Device</th><th>Model</th><th>Size</th><th>Spec</th><th>Colour</th>
-    <th>Signed Out</th><th>Returned</th><th>Duration (mins)</th><th>Status</th><th>Condition on Return</th>
+    <th>Device</th><th>Model</th><th>Size</th><th>Colour</th>
+    <th>Signed Out</th><th>Returned</th><th>Duration (mins)</th><th>Status</th><th>Condition on Return</th><th>Rider Feedback</th>
   </tr></thead><tbody>`;
   all.forEach((pair, i) => {
     const { out, in: inRow, outTS, inTS, durMins } = pair;
@@ -342,13 +342,13 @@ function renderRides(pairs) {
       <td><span class="tag">${out['Device_ID']||'—'}</span></td>
       <td><strong>${out['Model']||'—'}</strong></td>
       <td>${out['Size']||'—'}</td>
-      <td style="font-size:12px;color:var(--muted);">${out['Spec']||'—'}</td>
       <td>${out['Colour']||'—'}</td>
       <td class="ts-out">${fmt(outTS, false)}</td>
       <td class="${inTS ? 'ts-in' : 'ts-blank'}">${fmt(inTS, false)}</td>
       <td style="font-family:'DM Mono',monospace;font-size:12px;color:#60a5fa;">${dur}</td>
       <td><span class="pill ${status === 'Returned' ? 'ret' : 'out'}">${status}</span></td>
       <td style="font-size:12px;color:var(--muted);">${cond}</td>
+      <td style="font-size:12px;color:var(--muted);">${inRow ? (inRow['Client Feedback'] || '—') : '—'}</td>
     </tr>`;
   });
   h += '</tbody></table>';
